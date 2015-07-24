@@ -95,10 +95,9 @@ public class BoardFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         rootViewGroup = (ViewGroup) getView();
-        Constants.ROOT_VIEW_GROUP=rootViewGroup;
         pager = Constants.PAGER;
         context = getActivity();
-        Constants.CONTEXT=context;
+        Constants.CONTEXT = context;
         board = Constants.BOARD;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -108,7 +107,6 @@ public class BoardFragment extends Fragment {
         new PopulateColumns().execute();
         Log.i("Main thread Tag", "Main Thread Completed:" + position);
     }
-
 
     //TODO : the returned value is a jsonArray . Can be changed to Strings if other params are not used in future
     public void createCol() {
@@ -122,10 +120,8 @@ public class BoardFragment extends Fragment {
         int height = size.y;
         Log.i("conditions", "codition start=" + Math.max(0, start) + "\n check = " + Math.min(start + MAX_COL_DISPLAYED, board.getColNo()) + "in createCOl");
         for (int i = Math.max(0, start); i < Math.min(start + MAX_COL_DISPLAYED, board.getColNo()); i++) {
-
             LayoutInflater inflater = LayoutInflater.from(context);
             View columnView = inflater.inflate(R.layout.columns_layout, null, false);
-
             LinearLayout ll = (LinearLayout) columnView.findViewById(R.id.ll);
             ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT, 1.0f / MAX_COL_DISPLAYED));
             TextView tv = (TextView) columnView.findViewById(R.id.tv);
@@ -137,7 +133,7 @@ public class BoardFragment extends Fragment {
             cardContainerLayout.setMinimumHeight(height);
             cardContainerLayout.setMinimumWidth(width / MAX_COL_DISPLAYED);
             Log.i("Drag", "Calling drag constructor ");
-            cardContainerLayout.setOnDragListener(new MyDragListener());
+            cardContainerLayout.setOnDragListener(new MyDragListener(rootViewGroup));
             Log.i("Drag", "Drag Constructor Called ");
             addCard.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -184,90 +180,12 @@ public class BoardFragment extends Fragment {
         return etText.getText().toString().trim().length() <= 0;
     }
 
-
-   /* public class MyDragListener implements View.OnDragListener {
-        int list_position;
-        ViewGroup parent;
-        Drawable normalShape = getResources().getDrawable(R.drawable.normal_shape);
-        Drawable targetShape = getResources().getDrawable(R.drawable.target_shape);
-        //private ViewGroup parent;
-
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-        @Override
-        public boolean onDrag(final View v, final DragEvent event) {
-            if (v instanceof LinearLayout)
-                parent = (ViewGroup) v;
-            else
-                parent = (ViewGroup) v.getParent();
-            // Handles each of the expected events
-            switch (event.getAction()) {
-
-                //signal for the start of a drag and drop operation.
-                case DragEvent.ACTION_DRAG_STARTED:
-                    // do nothing
-                    break;
-
-                //the drag point has entered the bounding box of the View
-                case DragEvent.ACTION_DRAG_ENTERED:
-                    parent.setBackground(targetShape);    //change the shape of the view
-                    list_position = parent.indexOfChild(v);
-                    break;
-                //the user has moved the drag shadow outside the bounding box of the View
-                case DragEvent.ACTION_DRAG_EXITED:
-                    parent.setBackground(normalShape);    //chan
-                    list_position = parent.indexOfChild(v);
-
-                    int SCREEN_WIDTH = getView().getWidth();
-                    int offset = parent.getWidth() / 2;
-                    if (Math.abs(event.getX()) > SCREEN_WIDTH - offset)
-                        pager.setCurrentItem(pager.getCurrentItem() + 1);
-
-                    if (Math.abs(event.getX()) < offset)
-                        pager.setCurrentItem(pager.getCurrentItem() - 1);
-                    break;
-
-                //drag shadow has been released,the drag point is within the bounding box of the View
-                case DragEvent.ACTION_DROP:
-
-                    View view = (View) event.getLocalState();
-                    ViewGroup viewgroup = (ViewGroup) view.getParent();
-                    viewgroup.removeView(view);
-                    LinearLayout containView = (LinearLayout) parent;
-
-                    Toast.makeText(context,"column is "+containView.getTag().toString().substring(3,containView.getTag().toString().length()),Toast.LENGTH_SHORT).show();
-                    containView.addView(view, list_position);
-                    view.setVisibility(View.VISIBLE);
-                    break;
-
-                //the drag and drop operation has concluded.
-                // TODO : change the state of the wit
-                case DragEvent.ACTION_DRAG_ENDED://go back to normal shape
-                    parent.setBackground(normalShape);
-                    if (dropEventNotHandled(event)) {
-                        View curview = (View) event.getLocalState();
-                        curview.setVisibility(View.VISIBLE);
-                    }
-                    break;
-
-                default:
-                    break;
-            }
-            return true;
-        }
-
-        // handles the event if it dropped at someplace else.
-        private boolean dropEventNotHandled(DragEvent dragEvent) {
-            return !dragEvent.getResult();
-        }
-    }*/
-//////////////////////ASYNC TASKS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     private class PopulateColumns extends AsyncTask<Uri, String, Void> {
         private ProgressDialog pd;
 
         @Override
         protected void onPreExecute() {
-            if(position == pager.getCurrentItem()) {
+            if (position == pager.getCurrentItem()) {
                 pd = new ProgressDialog(context);
                 pd.setMessage("preparing your board...");
                 pd.setCancelable(false);
@@ -311,7 +229,7 @@ public class BoardFragment extends Fragment {
             super.onProgressUpdate(values);
             Log.i(Constants.PROGRESS_TAG, "progress recvd for workitem:" + values[0]);
             Log.i(Constants.PROGRESS_TAG, "progress recvd for column Name:" + values[1]);
-            board.populateCol(values[0], values[1],0);
+            board.populateCol(values[0], values[1], 0, rootViewGroup);
         }
 
         @Override
@@ -321,78 +239,5 @@ public class BoardFragment extends Fragment {
                 pd.dismiss();
             }
         }
-
-
     }
-
-    //////////////////////ASYNC TASKS////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-    //TODO : add the column view to parent
-    /*public void populateCol(String workItemDetails, String colName,int position) {
-
-        Log.i(Constants.TAG, "+++++Came to populate col with col name: " + colName + "\nand details=\n" + workItemDetails);
-        try {
-            JSONObject rootObj = new JSONObject(workItemDetails);
-            int id = rootObj.getInt("id");
-            Log.i(Constants.TAG, "Found Id" + id);
-            JSONObject fields = rootObj.getJSONObject("fields");
-            String title = fields.getString("System.Title");
-            Log.i(Constants.TAG, "Found title" + title);
-            final String state = fields.getString("System.State");
-            Log.i(Constants.TAG, "Found state" + id);
-            LayoutInflater inflater = LayoutInflater.from(context);
-            @SuppressLint("InflateParams") View cardBlock = inflater.inflate(R.layout.card_layout, null, false);
-            Log.i(Constants.TAG, "Layout inflated");
-            final TextView txt = (TextView) cardBlock.findViewById(R.id.card_title);
-            final ImageView expandImageButton = (ImageView) cardBlock.findViewById(R.id.expandImage);
-            ViewGroup v = (ViewGroup) rootViewGroup.findViewWithTag("col" + colName);
-            Log.i(Constants.TAG, "Viewgroup found" + v.getTag());
-            expandImageButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TextView assignedToView;
-                    TextView stateView;
-                    ViewGroup parent = (ViewGroup) view.getParent();
-                    RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    LinearLayout ll = new LinearLayout(context);
-                    ll.setOrientation(LinearLayout.VERTICAL);
-                    ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-                    String tag = "expandedView";
-                    ll.setTag(tag);
-                    stateView = new TextView(context);
-                    stateView.setText(state);
-                    stateView.setTag(tag);
-                    params.addRule(RelativeLayout.BELOW, txt.getId());
-                    //ll.addView(assignedToView);
-                    ll.addView(stateView);
-                    //dynamicLayoutsTags.add(tag);
-                    ViewGroup checkGroup = (ViewGroup) parent.findViewWithTag("expandedView");
-                    if (checkGroup == null) {
-
-                        parent.addView(ll, params);
-                        expandImageButton.setImageResource(android.R.drawable.arrow_up_float);
-                    } else {
-
-
-                        parent.removeView(parent.findViewWithTag("expandedView"));
-                        expandImageButton.setImageResource(android.R.drawable.arrow_down_float);
-                    }
-                }
-            });
-            cardBlock.setId(id);
-            cardBlock.setTag("Draggable");
-            txt.setText(title);
-            Log.i(Constants.TAG, "Title set for witem : " + id);
-            cardBlock.setOnLongClickListener(new MyClickListener());
-            cardBlock.setOnDragListener(new MyDragListener());
-
-            v.addView(cardBlock,position);
-
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-    }*/
-
-
 }

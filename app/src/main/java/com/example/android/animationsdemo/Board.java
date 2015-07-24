@@ -99,11 +99,8 @@ public class Board extends MainActivity {
         }
     }
 
-    public void populateCol(String workItemDetails, String colName,int position) {
-
-        final ViewGroup rootViewGroup = Constants.ROOT_VIEW_GROUP;
-        final Context context = Constants.CONTEXT;
-
+    public void populateCol(String workItemDetails, String colName,int position,ViewGroup rootViewGroup) {
+        Log.i("rootView","rootViewGroup="+rootViewGroup);
         Log.i(Constants.TAG, "+++++Came to populate col with col name: " + colName + "\nand details=\n" + workItemDetails);
         try {
             JSONObject rootObj = new JSONObject(workItemDetails);
@@ -114,7 +111,7 @@ public class Board extends MainActivity {
             Log.i(Constants.TAG, "Found title" + title);
             final String state = fields.getString("System.State");
             Log.i(Constants.TAG, "Found state" + id);
-            LayoutInflater inflater = LayoutInflater.from(getApplicationContext());
+            LayoutInflater inflater = LayoutInflater.from(Constants.CONTEXT);
             @SuppressLint("InflateParams") View cardBlock = inflater.inflate(R.layout.card_layout, null, false);
             Log.i(Constants.TAG, "Layout inflated");
             final TextView txt = (TextView) cardBlock.findViewById(R.id.card_title);
@@ -128,12 +125,12 @@ public class Board extends MainActivity {
                     TextView stateView;
                     ViewGroup parent = (ViewGroup) view.getParent();
                     RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-                    LinearLayout ll = new LinearLayout(context);
+                    LinearLayout ll = new LinearLayout(Constants.CONTEXT);
                     ll.setOrientation(LinearLayout.VERTICAL);
                     ll.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
                     String tag = "expandedView";
                     ll.setTag(tag);
-                    stateView = new TextView(context);
+                    stateView = new TextView(Constants.CONTEXT);
                     stateView.setText(state);
                     stateView.setTag(tag);
                     params.addRule(RelativeLayout.BELOW, txt.getId());
@@ -158,7 +155,7 @@ public class Board extends MainActivity {
             txt.setText(title);
             Log.i(Constants.TAG, "Title set for witem : " + id);
             cardBlock.setOnLongClickListener(new MyClickListener());
-            cardBlock.setOnDragListener(new MyDragListener());
+            cardBlock.setOnDragListener(new MyDragListener(rootViewGroup));
 
             v.addView(cardBlock,position);
 

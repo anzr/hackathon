@@ -12,5 +12,5 @@ public class Constants {
 	public static Context CONTEXT;
 	public static ViewPager PAGER;
 	public static Board BOARD;
-	public static ViewGroup ROOT_VIEW_GROUP;
+	public ViewGroup ROOT_VIEW_GROUP;
 }

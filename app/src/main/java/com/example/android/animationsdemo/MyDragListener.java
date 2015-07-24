@@ -18,12 +18,13 @@ import android.widget.Toast;
  */
 public class MyDragListener extends MainActivity implements View.OnDragListener {
     int list_position;
-    private final ViewGroup rootViewGroup=Constants.ROOT_VIEW_GROUP;
+    private ViewGroup rootViewGroup;
     private final ViewPager pager=Constants.PAGER;
     private final Context context = Constants.CONTEXT ;
     Drawable normalShape;
     Drawable targetShape;
-    public MyDragListener() {
+    public MyDragListener(ViewGroup rootViewGroup) {
+        this.rootViewGroup=rootViewGroup;
          normalShape = Constants.CONTEXT.getResources().getDrawable(R.drawable.normal_shape);
          targetShape = Constants.CONTEXT.getResources().getDrawable(R.drawable.target_shape);
         Log.i("Drag", "Came to Constructor: rootViewGroup="+rootViewGroup.toString());

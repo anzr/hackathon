@@ -61,7 +61,8 @@ public class MainActivity extends FragmentActivity {
         board = new Board();
         board.startCreateColumnsThread(oAuth2Helper);
         board.stopCreateColumnsThread();
-        numPages = board.getColNo() / MAX_COL_DISPLAYED + 1;
+        //check for extra columns
+        numPages = board.getColNo()%MAX_COL_DISPLAYED==0 ? board.getColNo()/MAX_COL_DISPLAYED : board.getColNo()/ MAX_COL_DISPLAYED + 1;
         // Instantiate a ViewPager and a PagerAdapter.
         pager = (ViewPager) findViewById(R.id.pager);
 
