@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\libs\android-support-v13.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="0a0cf96dabecd7b65a3638a229e7bdb42e6b0a77">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\android-support-v13-4027f57e32779a2c00fa335be670910fc849be7a.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client-jackson2\1.20.0\2408070b2abec043624d35b35e30450f1b663858\google-http-client-jackson2-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2408070b2abec043624d35b35e30450f1b663858">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\google-http-client-jackson2-1.20.0-43da07f32981719e94983a7613b52d019ba63a83.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.fasterxml.jackson.core\jackson-core\2.1.3\f6c3aed1cdfa21b5c1737c915186ea93a95a58bd\jackson-core-2.1.3.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="f6c3aed1cdfa21b5c1737c915186ea93a95a58bd">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\jackson-core-2.1.3-434815467fb9fa6a1d7c052c7a89a468858d5250.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.oauth-client\google-oauth-client\1.20.0\1d086ac5756475ddf451af2e2df6e288d18608ca\google-oauth-client-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1d086ac5756475ddf451af2e2df6e288d18608ca">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\google-oauth-client-1.20.0-c26897b000b7c22cefd502ca3822ca0dc52eeead.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\org.mortbay.jetty\jetty\6.1.26\2f546e289fddd5b1fab1d4199fbb6e9ef43ee4b0\jetty-6.1.26.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="2f546e289fddd5b1fab1d4199fbb6e9ef43ee4b0">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\jetty-6.1.26-751c3820989a670e58815966a2a9bec4446c0c2a.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\classes-08e2067e0d9f684a5cd7e22b748641d56b55d606.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\1.3.9\40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf\jsr305-1.3.9.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="40719ea6961c0cb6afaeb6a921eaa1f6afd4cfdf">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\jsr305-1.3.9-dd5625dabb2fc1fb47a1ffe05158839b9414bee0.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.guava\guava-jdk5\13.0\381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7\guava-jdk5-13.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="381ae6c8add7c98e9bcddb1e0b898400cd6fc3f7">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\guava-jdk5-13.0-52cc8cdf4abfc7b20fdc88f027f0681178596d4d.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.http-client\google-http-client\1.20.0\93d82db2bca534960253f43424b2ba9d7638b4d2\google-http-client-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="93d82db2bca534960253f43424b2ba9d7638b4d2">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\google-http-client-1.20.0-264dbc69af67dc0b4ae1377f2f279313741b5193.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\22.2.0\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\classes-ff42fdd4e5865943baf5b3231cd1861c53e5e19f.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.oauth-client\google-oauth-client-jetty\1.20.0\33ce9d07291881459aacb459ab4aa20c5fb97ffc\google-oauth-client-jetty-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="33ce9d07291881459aacb459ab4aa20c5fb97ffc">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\google-oauth-client-jetty-1.20.0-a51aa50e9db0b97ff612c08067b7a07c0216108a.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\exploded-aar\com.android.support\support-v4\22.2.0\jars\libs\internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\internal_impl-22.2.0-ffb4a02ec198df56ed9bf0f5ab31f57f6e8cd0e5.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\exploded-aar\com.android.support\cardview-v7\21.0.3\jars\classes.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="00b0b7233e1ec64acebfac40d4983d32d4712426">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\classes-0b28959aabff5f1e25083437addb46633516776b.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.oauth-client\google-oauth-client-java6\1.20.0\1b12417c242005a61679ddce26636a7439d8c2fe\google-oauth-client-java6-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="1b12417c242005a61679ddce26636a7439d8c2fe">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\google-oauth-client-java6-1.20.0-41f97e2adf982189e2082e0c8c76235ad246f8e1.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\com.google.api-client\google-api-client\1.20.0\d3e66209ae9e749b2d6833761e7885f60f285564\google-api-client-1.20.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="d3e66209ae9e749b2d6833761e7885f60f285564">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\google-api-client-1.20.0-f6684a9a5f94f35619f4e440997d303824b5b9be.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\org.mortbay.jetty\servlet-api\2.5-20081211\22bff70037e1e6fa7e6413149489552ee2064702\servlet-api-2.5-20081211.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="22bff70037e1e6fa7e6413149489552ee2064702">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\servlet-api-2.5-20081211-dad635853e6cb058d12e68d6121769103c79a798.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\22.2.0\support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\support-annotations-22.2.0-36a82f4dbe1fc304ca67c3f59a07906c8f3821a1.jar" />
+    </item>
+    <item
+        jar="C:\Users\t-anmo\.gradle\caches\modules-2\files-2.1\org.mortbay.jetty\jetty-util\6.1.26\e5642fe0399814e1687d55a3862aa5a3417226a9\jetty-util-6.1.26.jar"
+        jumboMode="false"
+        revision="22.0.1"
+        sha1="e5642fe0399814e1687d55a3862aa5a3417226a9">
+        <dex dex="C:\Users\t-anmo\AndroidStudioProjects\AnimationsDemo\app\build\intermediates\pre-dexed\debug\jetty-util-6.1.26-6aa78975292a10838c69c1fd5543f0598389d58d.jar" />
+    </item>
+
+</items>
