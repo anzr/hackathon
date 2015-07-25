@@ -49,7 +49,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:src="@mipmap/default_avatar"
-                android:id="@+id/default_avatar"
+                android:id="@+id/close"
                 android:layout_gravity="top|left"
                 android:contentDescription="The avatar of any member"
                 android:layout_alignTop="@+id/card_title"
@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="New Card"
                 android:textSize="16sp"
-                android:layout_toLeftOf="@+id/default_avatar"
+                android:layout_toLeftOf="@+id/close"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true" />
 
@@ -73,7 +73,7 @@
                 android:layout_height="15dp"
                 android:id="@+id/expandImage"
                 android:src="@android:drawable/arrow_down_float"
-                android:layout_below="@+id/default_avatar"
+                android:layout_below="@+id/close"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true" />

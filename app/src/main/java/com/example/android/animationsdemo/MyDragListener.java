@@ -17,17 +17,19 @@ import android.widget.Toast;
  * Created by t-anmo on 7/24/2015.
  */
 public class MyDragListener extends MainActivity implements View.OnDragListener {
-    int list_position;
+    int list_position=0;
     private ViewGroup rootViewGroup;
     private final ViewPager pager=Constants.PAGER;
     private final Context context = Constants.CONTEXT ;
     Drawable normalShape;
     Drawable targetShape;
+    ApiCalls apiCalls;
     public MyDragListener(ViewGroup rootViewGroup) {
         this.rootViewGroup=rootViewGroup;
          normalShape = Constants.CONTEXT.getResources().getDrawable(R.drawable.normal_shape);
          targetShape = Constants.CONTEXT.getResources().getDrawable(R.drawable.target_shape);
         Log.i("Drag", "Came to Constructor: rootViewGroup="+rootViewGroup.toString());
+        apiCalls = new ApiCalls();
     }
 
 
@@ -78,9 +80,11 @@ public class MyDragListener extends MainActivity implements View.OnDragListener 
                 viewgroup.removeView(view);
                 LinearLayout containView = (LinearLayout) parent;
 
-                Toast.makeText(context, "column is " + containView.getTag().toString().substring(3, containView.getTag().toString().length()), Toast.LENGTH_SHORT).show();
-                containView.addView(view, list_position);
-                view.setVisibility(View.VISIBLE);
+                apiCalls.initiateHandleDragDropTasks(containView.getTag().toString().substring(3),list_position,rootViewGroup,view.getId());
+
+
+                //containView.addView(view, list_position);
+                //view.setVisibility(View.VISIBLE);
                 break;
 
             //the drag and drop operation has concluded.

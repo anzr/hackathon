@@ -144,35 +144,46 @@ containing a value of this type.
         public static final int image1=0x7f020005;
         public static final int image2=0x7f020006;
         public static final int normal_shape=0x7f020007;
-        public static final int target_shape=0x7f020008;
-        public static final int thumb1=0x7f020009;
-        public static final int thumb2=0x7f02000a;
+        public static final int shape_window_dim=0x7f020008;
+        public static final int target_shape=0x7f020009;
+        public static final int thumb1=0x7f02000a;
+        public static final int thumb2=0x7f02000b;
     }
     public static final class id {
-        public static final int action_add_item=0x7f080016;
+        public static final int action_add_item=0x7f080020;
         public static final int action_flip=0x7f080000;
         public static final int action_next=0x7f080001;
-        public static final int action_previous=0x7f080017;
-        public static final int addCard=0x7f08000c;
-        public static final int buttonConnect=0x7f080011;
-        public static final int buttonQuery=0x7f080013;
+        public static final int action_previous=0x7f080021;
+        public static final int addCard=0x7f080016;
+        public static final int assignedToTextView=0x7f08000c;
+        public static final int btnClose=0x7f080010;
+        public static final int btnSave=0x7f080011;
+        public static final int buttonConnect=0x7f08001b;
+        public static final int buttonQuery=0x7f08001d;
         public static final int card=0x7f080005;
-        public static final int cardContainer=0x7f08000e;
+        public static final int cardContainer=0x7f080018;
         public static final int cardLayout=0x7f080004;
         public static final int card_holder=0x7f080006;
         public static final int card_title=0x7f080008;
-        public static final int container=0x7f080003;
-        public static final int default_avatar=0x7f080007;
-        public static final int editText=0x7f080010;
+        public static final int close=0x7f080007;
+        public static final int editText=0x7f08001a;
         public static final int expandImage=0x7f080009;
-        public static final int ll=0x7f08000a;
-        public static final int newCardTitle=0x7f080014;
+        public static final int idTextView=0x7f080013;
+        public static final int ll=0x7f080014;
+        public static final int mainView=0x7f080003;
+        public static final int newCardTitle=0x7f08001e;
         public static final int pager=0x7f080002;
-        public static final int responseView=0x7f080012;
-        public static final int saveNewCard=0x7f080015;
-        public static final int scrollView=0x7f08000d;
-        public static final int section_label=0x7f08000f;
-        public static final int tv=0x7f08000b;
+        public static final int reasonEditText=0x7f08000b;
+        public static final int reasonTextView=0x7f08000d;
+        public static final int responseView=0x7f08001c;
+        public static final int saveNewCard=0x7f08001f;
+        public static final int scrollView=0x7f080017;
+        public static final int section_label=0x7f080019;
+        public static final int spinnerAsignedTo=0x7f08000a;
+        public static final int spinnerState=0x7f08000f;
+        public static final int stateTextView=0x7f08000e;
+        public static final int titleEditText=0x7f080012;
+        public static final int tv=0x7f080015;
     }
     public static final class integer {
         public static final int card_flip_time_full=0x7f090000;
@@ -182,10 +193,11 @@ containing a value of this type.
         public static final int activity_screen_slide=0x7f040000;
         public static final int anzer=0x7f040001;
         public static final int card_layout=0x7f040002;
-        public static final int columns_layout=0x7f040003;
-        public static final int fragment_main=0x7f040004;
-        public static final int main_activity=0x7f040005;
-        public static final int new_card_layout=0x7f040006;
+        public static final int card_view_edit_mode=0x7f040003;
+        public static final int columns_layout=0x7f040004;
+        public static final int fragment_main=0x7f040005;
+        public static final int main_activity=0x7f040006;
+        public static final int new_card_layout=0x7f040007;
     }
     public static final class menu {
         public static final int activity_layout_changes=0x7f0c0000;

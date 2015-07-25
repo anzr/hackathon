@@ -1,27 +1,20 @@
 package com.example.android.animationsdemo;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Context;
-import android.graphics.Point;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Objects;
 
 /**
  * Created by t-anmo on 7/14/2015.
@@ -30,6 +23,16 @@ public class Board extends MainActivity {
     private int colNo;
     private String[] colName;
     private Thread t;
+
+    public String getColFieldName() {
+        return colFieldName;
+    }
+
+    public void setColFieldName(String colFieldName) {
+        this.colFieldName = colFieldName;
+    }
+
+    private String colFieldName;
 
     public int getColNo() {
         return colNo;
@@ -65,11 +68,14 @@ public class Board extends MainActivity {
 
 
     public class CreateColumnsThread extends Thread {
-        private String apiResponse = null;
-        private String query = "https://anmostart.visualstudio.com/DefaultCollection/trialProject/TrialProject Team/_apis/work/boards/backlog items/columns?api-version=2.0-preview";
+        private String columnsJSON = null;
+        private String colFieldName;
+        private String getColFieldNameJSON;
+        private String columnsJSONQuery = Constants.ACCOUNT_URL+"/DefaultCollection/"+Constants.PROJECT+"/"+Constants.TEAM+"/_apis/work/boards/"+Constants.BOARD_NAME+"/columns?api-version=2.0-preview";
+        private String getColFieldNameQuery= Constants.ACCOUNT_URL+"/DefaultCollection/_apis/wit/workitems/1?api-version=1.0";
         OAuth2Helper oAuth2Helper;
 
-        //TODO : Make setters and getters like get board get team to form query
+        //TODO : Make setters and getters like get board get team to form columnsJSONQuery
         public CreateColumnsThread(OAuth2Helper oAuth2Helper) {
             this.oAuth2Helper = oAuth2Helper;
         }
@@ -77,13 +83,15 @@ public class Board extends MainActivity {
         public CreateColumnsThread() {
         }
 
+        @SuppressLint("NewApi")
         @Override
         public void run() {
             try {
 
-                apiResponse = oAuth2Helper.executeApiCall(query);
-                Log.i(Constants.TAG, "Received response from API : " + apiResponse);
-                JSONObject rootObj = new JSONObject(apiResponse);
+                columnsJSON = oAuth2Helper.executeApiGetCall(columnsJSONQuery);
+                getColFieldNameJSON = oAuth2Helper.executeApiGetCall(getColFieldNameQuery);
+                Log.i(Constants.TAG, "Received response from API : " + columnsJSON);
+                JSONObject rootObj = new JSONObject(columnsJSON);
                 setColNo(rootObj.getInt("count"));
                 Log.i(Constants.TAG, "Col No " + rootObj.getInt("count"));
                 JSONArray columns = rootObj.getJSONArray("value");
@@ -92,9 +100,19 @@ public class Board extends MainActivity {
                     column = columns.getJSONObject(i);
                     setColName(i, column.getString("name"));
                 }
+                JSONObject rootObj1 = new JSONObject(getColFieldNameJSON);
+                JSONObject fields = rootObj1.getJSONObject("fields");
+                for(int i=0;i<fields.length();i++){
+                    String fieldName = fields.names().getString(i);
+                    Log.i("value to check", "the substring to check is for i=:" + i + "and \n the string is " + fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())));
+                   if(Objects.equals(fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())), "_Kanban.Column")){
+                       Log.i("field name","field name is inside the thread :"+fieldName);
+                       setColFieldName(fieldName);
+                   }
+                }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                apiResponse = ex.getMessage();
+                columnsJSON = ex.getMessage();
             }
         }
     }
@@ -116,8 +134,8 @@ public class Board extends MainActivity {
             Log.i(Constants.TAG, "Layout inflated");
             final TextView txt = (TextView) cardBlock.findViewById(R.id.card_title);
             final ImageView expandImageButton = (ImageView) cardBlock.findViewById(R.id.expandImage);
-            ViewGroup v = (ViewGroup) rootViewGroup.findViewWithTag("col" + colName);
-            Log.i(Constants.TAG, "Viewgroup found" + v.getTag());
+            ViewGroup parentColumnView = (ViewGroup) rootViewGroup.findViewWithTag("col" + colName);
+            Log.i(Constants.TAG, "Viewgroup found" + parentColumnView.getTag());
             expandImageButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -156,8 +174,9 @@ public class Board extends MainActivity {
             Log.i(Constants.TAG, "Title set for witem : " + id);
             cardBlock.setOnLongClickListener(new MyClickListener());
             cardBlock.setOnDragListener(new MyDragListener(rootViewGroup));
+            cardBlock.setOnClickListener(new OpenCardInEditMode(rootViewGroup,fields));
 
-            v.addView(cardBlock,position);
+            parentColumnView.addView(cardBlock, position);
 
 
         } catch (JSONException e) {

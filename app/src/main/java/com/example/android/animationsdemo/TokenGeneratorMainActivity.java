@@ -58,14 +58,14 @@ public class TokenGeneratorMainActivity extends Activity {
             public void onClick(View v) {
                 // Connect to VSO
                 String url = mURL.getText().toString();
-                if (url.length() == 0) {
-
-                    //Toast.makeText(getApplicationContext(), "Please enter your account url", Toast.LENGTH_SHORT).show();
+                if (url.length() == 0 || !url.substring(Math.max(0, url.length() - ".visualstudio.com".length())).equals(".visualstudio.com")) {
+                    Toast.makeText(getApplicationContext(), "Please enter a url ending with visualstudio.com account url", Toast.LENGTH_SHORT).show();
 
                 } else {
                     Oauth2Params.VSO_OAUTH2.setClientId(API_KEY);
                     Oauth2Params.VSO_OAUTH2.setClientSecret(API_SECRET);
                     Oauth2Params.VSO_OAUTH2.setScope(SCOPE);
+                    Constants.ACCOUNT_URL=url.substring(0,"https://".length()).equals("https://")?url:"https://"+url;
                     Oauth2Params.VSO_OAUTH2.setApiUrl(url);
                     startOauthFlow(Oauth2Params.VSO_OAUTH2);
                     prefs = PreferenceManager.getDefaultSharedPreferences(TokenGeneratorMainActivity.this);

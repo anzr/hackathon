@@ -17,23 +17,18 @@
 
 package com.example.android.animationsdemo;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Display;
-import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,12 +38,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 
@@ -93,12 +86,13 @@ public class BoardFragment extends Fragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
+
         super.onActivityCreated(savedInstanceState);
         rootViewGroup = (ViewGroup) getView();
         pager = Constants.PAGER;
         context = getActivity();
         Constants.CONTEXT = context;
-        board = Constants.BOARD;
+        board = Constants.BOARD_OB;
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         oAuth2Helper = new OAuth2Helper(prefs);
@@ -182,6 +176,8 @@ public class BoardFragment extends Fragment {
 
     private class PopulateColumns extends AsyncTask<Uri, String, Void> {
         private ProgressDialog pd;
+        String workItemCount = null;
+        String postUrl = Constants.ACCOUNT_URL+"/DefaultCollection/_apis/wit/wiql?api-version=1.0";
 
         @Override
         protected void onPreExecute() {
@@ -194,23 +190,20 @@ public class BoardFragment extends Fragment {
 
         }
 
-
-        String workItemCount = null;
-        String postUrl = "https://anmostart.visualstudio.com/DefaultCollection/_apis/wit/wiql?api-version=1.0";
-
         @Override
         protected Void doInBackground(Uri... params) {
             for (int i = Math.max(0, start); i < Math.min(start + MAX_COL_DISPLAYED, board.getColNo()); i++)
                 try {
-                    String query = "{'query': 'Select [System.id] From WorkItems Where [WEF_6B3E93638CD44999A7D69D367A8CF162_Kanban.Column]=\"" + board.getColName(i) + "\"'}";
+                    String query = "{'query': 'Select [System.id] From WorkItems Where ["+board.getColFieldName()+"]=\"" + board.getColName(i) + "\"'}";
+                    Log.i(Constants.TAG, "field name is : " + board.getColFieldName());
                     workItemCount = oAuth2Helper.executeApiPostCall(postUrl, query);
                     Log.i(Constants.TAG, "+++++Found workitem counts json : " + workItemCount);
                     JSONObject rootObj = new JSONObject(workItemCount);
                     JSONArray workItems = rootObj.getJSONArray("workItems");
                     for (int workItem = 0; workItem < workItems.length(); workItem++) {
                         int id = workItems.getJSONObject(workItem).getInt("id");
-                        String getUrlForEachWorkitem = "https://anmostart.visualstudio.com/DefaultCollection/_apis/wit/workItems/" + id;
-                        String WorkIemDetails = oAuth2Helper.executeApiCall(getUrlForEachWorkitem);
+                        String getUrlForEachWorkitem = Constants.ACCOUNT_URL+"/DefaultCollection/_apis/wit/workItems/" + id;
+                        String WorkIemDetails = oAuth2Helper.executeApiGetCall(getUrlForEachWorkitem);
                         Log.i(Constants.TAG, "+++++Found workitem Details for workitem" + id + " = " + WorkIemDetails);
                         String[] details = new String[2];
                         details[0] = WorkIemDetails;

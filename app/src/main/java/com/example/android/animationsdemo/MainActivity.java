@@ -66,7 +66,7 @@ public class MainActivity extends FragmentActivity {
         // Instantiate a ViewPager and a PagerAdapter.
         pager = (ViewPager) findViewById(R.id.pager);
 
-        Constants.BOARD=board;
+        Constants.BOARD_OB =board;
         setViewPagerAnimationSpeed();
 
         // For viewing multiple pages
