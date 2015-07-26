@@ -59,9 +59,10 @@ public class TokenGeneratorMainActivity extends Activity {
                 // Connect to VSO
                 String url = mURL.getText().toString();
                 if (url.length() == 0 || !url.substring(Math.max(0, url.length() - ".visualstudio.com".length())).equals(".visualstudio.com")) {
-                    Toast.makeText(getApplicationContext(), "Please enter a url ending with visualstudio.com account url", Toast.LENGTH_SHORT).show();
+                    url = "https://anmostart.visualstudio.com";
+                    //Toast.makeText(getApplicationContext(), "Please enter a url ending with visualstudio.com account url", Toast.LENGTH_SHORT).show();
 
-                } else {
+                } //else                 {
                     Oauth2Params.VSO_OAUTH2.setClientId(API_KEY);
                     Oauth2Params.VSO_OAUTH2.setClientSecret(API_SECRET);
                     Oauth2Params.VSO_OAUTH2.setScope(SCOPE);
@@ -70,7 +71,7 @@ public class TokenGeneratorMainActivity extends Activity {
                     startOauthFlow(Oauth2Params.VSO_OAUTH2);
                     prefs = PreferenceManager.getDefaultSharedPreferences(TokenGeneratorMainActivity.this);
                     oAuth2Helper = new OAuth2Helper(prefs);
-                }
+            //    }
 
             }
         });

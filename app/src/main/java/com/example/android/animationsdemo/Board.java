@@ -14,6 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 /**
@@ -33,6 +34,13 @@ public class Board extends MainActivity {
     }
 
     private String colFieldName;
+
+
+    public ArrayList<String> getMembers() {
+        return members;
+    }
+
+    private ArrayList<String> members;
 
     public int getColNo() {
         return colNo;
@@ -69,10 +77,11 @@ public class Board extends MainActivity {
 
     public class CreateColumnsThread extends Thread {
         private String columnsJSON = null;
-        private String colFieldName;
+        private String membersArrayJSON;
         private String getColFieldNameJSON;
-        private String columnsJSONQuery = Constants.ACCOUNT_URL+"/DefaultCollection/"+Constants.PROJECT+"/"+Constants.TEAM+"/_apis/work/boards/"+Constants.BOARD_NAME+"/columns?api-version=2.0-preview";
-        private String getColFieldNameQuery= Constants.ACCOUNT_URL+"/DefaultCollection/_apis/wit/workitems/1?api-version=1.0";
+        private String columnsJSONQuery = Constants.ACCOUNT_URL + "/DefaultCollection/" + Constants.PROJECT + "/" + Constants.TEAM + "/_apis/work/boards/" + Constants.BOARD_NAME + "/columns?api-version=2.0-preview";
+        private String getColFieldNameQuery = Constants.ACCOUNT_URL + "/DefaultCollection/_apis/wit/workitems/1?api-version=1.0";
+        private String getMemberNamesQuery = Constants.ACCOUNT_URL + "/DefaultCollection/_apis/projects/" + Constants.PROJECT + "/teams/" + Constants.TEAM + "/members/?api-version=1.0";
         OAuth2Helper oAuth2Helper;
 
         //TODO : Make setters and getters like get board get team to form columnsJSONQuery
@@ -90,26 +99,44 @@ public class Board extends MainActivity {
 
                 columnsJSON = oAuth2Helper.executeApiGetCall(columnsJSONQuery);
                 getColFieldNameJSON = oAuth2Helper.executeApiGetCall(getColFieldNameQuery);
+                membersArrayJSON = oAuth2Helper.executeApiGetCall(getMemberNamesQuery);
                 Log.i(Constants.TAG, "Received response from API : " + columnsJSON);
                 JSONObject rootObj = new JSONObject(columnsJSON);
                 setColNo(rootObj.getInt("count"));
                 Log.i(Constants.TAG, "Col No " + rootObj.getInt("count"));
                 JSONArray columns = rootObj.getJSONArray("value");
+                //Get Col Names
                 for (int i = 0; i < getColNo(); i++) {
                     JSONObject column;
                     column = columns.getJSONObject(i);
                     setColName(i, column.getString("name"));
                 }
+                ////to get and store the field name for columns as it varies from account to account
                 JSONObject rootObj1 = new JSONObject(getColFieldNameJSON);
                 JSONObject fields = rootObj1.getJSONObject("fields");
-                for(int i=0;i<fields.length();i++){
+                for (int i = 0; i < fields.length(); i++) {
                     String fieldName = fields.names().getString(i);
                     Log.i("value to check", "the substring to check is for i=:" + i + "and \n the string is " + fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())));
-                   if(Objects.equals(fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())), "_Kanban.Column")){
-                       Log.i("field name","field name is inside the thread :"+fieldName);
-                       setColFieldName(fieldName);
-                   }
+                    if (Objects.equals(fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())), "_Kanban.Column")) {
+                        Log.i("field name", "field name is inside the thread :" + fieldName);
+                        setColFieldName(fieldName);
+                        break;
+                    }
                 }
+
+                ///set members array to be used later in Assigned To
+                JSONObject rootObj3 = new JSONObject(membersArrayJSON);
+                JSONArray nameJSONArray = rootObj3.getJSONArray("value");
+                int count = rootObj3.getInt("count");
+                members = new ArrayList<>();
+                members.add("");
+                for (int i = 0; i < count; i++) {
+                    String memberName = nameJSONArray.getJSONObject(i).getString("displayName");
+                    members.add(memberName);
+                }
+                //if no one assigned the task
+
+
             } catch (Exception ex) {
                 ex.printStackTrace();
                 columnsJSON = ex.getMessage();
@@ -117,8 +144,8 @@ public class Board extends MainActivity {
         }
     }
 
-    public void populateCol(String workItemDetails, String colName,int position,ViewGroup rootViewGroup) {
-        Log.i("rootView","rootViewGroup="+rootViewGroup);
+    public void populateCol(String workItemDetails, String colName, int position, ViewGroup rootViewGroup) {
+        Log.i("rootView", "rootViewGroup=" + rootViewGroup);
         Log.i(Constants.TAG, "+++++Came to populate col with col name: " + colName + "\nand details=\n" + workItemDetails);
         try {
             JSONObject rootObj = new JSONObject(workItemDetails);
@@ -174,7 +201,7 @@ public class Board extends MainActivity {
             Log.i(Constants.TAG, "Title set for witem : " + id);
             cardBlock.setOnLongClickListener(new MyClickListener());
             cardBlock.setOnDragListener(new MyDragListener(rootViewGroup));
-            cardBlock.setOnClickListener(new OpenCardInEditMode(rootViewGroup,fields));
+            cardBlock.setOnClickListener(new OpenCardInEditMode(rootViewGroup, fields));
 
             parentColumnView.addView(cardBlock, position);
 
@@ -182,6 +209,11 @@ public class Board extends MainActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public void refreshPage(){
+        Constants.PAGER.setOffscreenPageLimit(0);
+        Constants.PAGER.getAdapter().notifyDataSetChanged();
+        Constants.PAGER.setOffscreenPageLimit(Constants.NUM_PAGES);
     }
 
 

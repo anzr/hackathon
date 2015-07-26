@@ -17,4 +17,5 @@ public class Constants {
 	public static final String PROJECT = "trialProject";
 	public static final String TEAM = "TrialProject Team";
 	public static final String BOARD_NAME = "backlog items";
+	public static int NUM_PAGES;
 }

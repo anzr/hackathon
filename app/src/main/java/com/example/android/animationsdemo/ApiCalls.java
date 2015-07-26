@@ -86,56 +86,6 @@ public class ApiCalls {
     }
 
 
-   /* private class HandleDragDropTasksThread extends Thread {
-        private String columnsJSON = null;
-        private String colFieldName;
-        private String getColFieldNameJSON;
-        private String columnsJSONQuery = "https://anmostart.visualstudio.com/DefaultCollection/trialProject/TrialProject Team/_apis/work/boards/backlog items/columns?api-version=2.0-preview";
-        private String getColFieldNameQuery="https://anmostart.visualstudio.com/DefaultCollection/_apis/wit/workitems/1?api-version=1.0";
-        OAuth2Helper oAuth2Helper;
-
-        //TODO : Make setters and getters like get board get team to form columnsJSONQuery
-        public CreateColumnsThread(OAuth2Helper oAuth2Helper) {
-            this.oAuth2Helper = oAuth2Helper;
-        }
-
-        public CreateColumnsThread() {
-        }
-
-        @SuppressLint("NewApi")
-        @Override
-        public void run() {
-            try {
-
-                columnsJSON = oAuth2Helper.executeApiGetCall(columnsJSONQuery);
-                getColFieldNameJSON = oAuth2Helper.executeApiGetCall(getColFieldNameQuery);
-                Log.i(Constants.TAG, "Received response from API : " + columnsJSON);
-                JSONObject rootObj = new JSONObject(columnsJSON);
-                setColNo(rootObj.getInt("count"));
-                Log.i(Constants.TAG, "Col No " + rootObj.getInt("count"));
-                JSONArray columns = rootObj.getJSONArray("value");
-                for (int i = 0; i < getColNo(); i++) {
-                    JSONObject column;
-                    column = columns.getJSONObject(i);
-                    setColName(i, column.getString("name"));
-                }
-                JSONObject rootObj1 = new JSONObject(getColFieldNameJSON);
-                JSONObject fields = rootObj1.getJSONObject("fields");
-                for(int i=0;i<fields.length();i++){
-                    String fieldName = fields.names().getString(i);
-                    Log.i("value to check", "the substring to check is for i=:" + i + "and \n the string is " + fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())));
-                    if(Objects.equals(fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())), "_Kanban.Column")){
-                        Log.i("field name","field name is inside the thread :"+fieldName);
-                        setColFieldName(fieldName);
-                    }
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                columnsJSON = ex.getMessage();
-            }
-        }
-    }*/
-
 }
 
 //TODO : Set prefs and oauth2helper

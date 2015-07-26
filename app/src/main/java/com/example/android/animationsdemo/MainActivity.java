@@ -49,7 +49,6 @@ public class MainActivity extends FragmentActivity {
       */
     private int numPages;
     private ViewPager pager;
-    ApiCalls apiCalls;
     Board board;
 
     @Override
@@ -65,7 +64,7 @@ public class MainActivity extends FragmentActivity {
         numPages = board.getColNo()%MAX_COL_DISPLAYED==0 ? board.getColNo()/MAX_COL_DISPLAYED : board.getColNo()/ MAX_COL_DISPLAYED + 1;
         // Instantiate a ViewPager and a PagerAdapter.
         pager = (ViewPager) findViewById(R.id.pager);
-
+        Constants.NUM_PAGES=numPages;
         Constants.BOARD_OB =board;
         setViewPagerAnimationSpeed();
 
