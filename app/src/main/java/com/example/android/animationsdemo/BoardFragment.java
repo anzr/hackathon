@@ -184,7 +184,7 @@ public class BoardFragment extends Fragment {
             if (position == pager.getCurrentItem()) {
                 pd = new ProgressDialog(context);
                 pd.setMessage("preparing your board...");
-                pd.setCancelable(false);
+                //pd.setCancelable(false);
                 pd.show();
             }
 
@@ -194,7 +194,7 @@ public class BoardFragment extends Fragment {
         protected Void doInBackground(Uri... params) {
             for (int i = Math.max(0, start); i < Math.min(start + MAX_COL_DISPLAYED, board.getColNo()); i++)
                 try {
-                    String query = "{'query': 'Select [System.id] From WorkItems Where ["+board.getColFieldName()+"]=\"" + board.getColName(i) + "\"'}";
+                    String query = "{'query': 'Select [System.id] From WorkItems Where [System.TeamProject]=\""+Constants.PROJECT+"\" AND ["+board.getColFieldName()+"]=\"" + board.getColName(i) + "\"'}";
                     Log.i(Constants.TAG, "field name is : " + board.getColFieldName());
                     workItemCount = oAuth2Helper.executeApiPostCall(postUrl, query);
                     Log.i(Constants.TAG, "+++++Found workitem counts json : " + workItemCount);
@@ -222,7 +222,7 @@ public class BoardFragment extends Fragment {
             super.onProgressUpdate(values);
             Log.i(Constants.PROGRESS_TAG, "progress recvd for workitem:" + values[0]);
             Log.i(Constants.PROGRESS_TAG, "progress recvd for column Name:" + values[1]);
-            board.populateCol(values[0], values[1], 0, rootViewGroup);
+            board.populateCol(values[0], values[1], -1, rootViewGroup);
         }
 
         @Override

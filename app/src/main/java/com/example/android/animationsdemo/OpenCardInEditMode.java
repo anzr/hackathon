@@ -42,6 +42,8 @@ public class OpenCardInEditMode implements View.OnClickListener {
     private String newReason;
     private String newAssignedTo;
     private int workItemId;
+    private int position;
+    private ViewGroup parent;
 
     public OpenCardInEditMode(ViewGroup rootViewGroup, JSONObject cardFields) {
         this.rootViewGroup = rootViewGroup;
@@ -49,13 +51,16 @@ public class OpenCardInEditMode implements View.OnClickListener {
     }
 
     @Override
-    public void onClick(View view){
+    public void onClick(View view) {
         try {
+            parent = (ViewGroup) view.getParent();
+            this.position = parent.indexOfChild(view);
+            Toast.makeText(Constants.CONTEXT,"The position is:"+ this.position,Toast.LENGTH_LONG).show();
             this.title = cardFields.getString("System.Title");
             this.assignedTo = cardFields.has("System.AssignedTo") ? cardFields.getString("System.AssignedTo").split("<", 2)[0].trim() : "";
             this.reason = cardFields.has("System.Reason") ? cardFields.getString("System.Reason") : "";
             this.state = cardFields.getString("System.State");
-            this.workItemId=view.getId();
+            this.workItemId = view.getId();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -86,7 +91,7 @@ public class OpenCardInEditMode implements View.OnClickListener {
                     @Override
                     public void onItemSelected(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                         int position = spinAssignedTo.getSelectedItemPosition();
-                        Toast.makeText(Constants.CONTEXT, "You have selected " + Constants.BOARD_OB.getMembers().get(position), Toast.LENGTH_LONG).show();
+                        //Toast.makeText(Constants.CONTEXT, "You have selected " + Constants.BOARD_OB.getMembers().get(position), Toast.LENGTH_LONG).show();
                         // TODO Auto-generated method stub
                     }
 
@@ -135,14 +140,17 @@ public class OpenCardInEditMode implements View.OnClickListener {
                                            newReason = reasonEditView.getText().toString();
                                            newAssignedTo = Constants.BOARD_OB.getMembers().get(spinAssignedTo.getSelectedItemPosition());
                                            popupWindow.dismiss();
-                                          new saveEditedOptions().execute();
+                                           new saveEditedOptions().execute();
                                        }
                                    }
 
         );
     }
+
     private class saveEditedOptions extends AsyncTask<Void, Void, Void> {
         ProgressDialog pd = new ProgressDialog(Constants.CONTEXT);
+        private String updatedWorkItemDetails;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -155,7 +163,14 @@ public class OpenCardInEditMode implements View.OnClickListener {
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
-           Constants.BOARD_OB.refreshPage();
+            //instead of refreshin we can add and remove views from the parent
+            Constants.BOARD_OB.refreshPage();
+            //parents tag is in the format "col<columnName>"
+            String colName = parent.getTag().toString().substring(3);
+            //TODO : Once patch call works update refresh page with adding card to columns simply
+            //remove the current view and add this one
+            // Constants.BOARD_OB.populateCol(updatedWorkItemDetails,colName,position,rootViewGroup);
+
             if (pd != null) {
                 pd.dismiss();
             }
@@ -163,23 +178,24 @@ public class OpenCardInEditMode implements View.OnClickListener {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            String query="[";
-            if(!title.equals(newTitle.trim()))
-                query += "{\"op\": \"add\",\"path\": \"/fields/System.Title\",\"value\": \""+newTitle+"\"},";
-            if(!assignedTo.equals(newAssignedTo))
-                query += "{\"op\": \"add\",\"path\": \"/fields/System.AssignedTo\",\"value\": \""+newAssignedTo+"\"},";
-            if(!reason.equals(newReason.trim()))
-                query += "{\"op\": \"add\",\"path\": \"/fields/System.Reason\",\"value\": \""+newReason+"\"},";
+            String query = "[";
+            if (!title.equals(newTitle.trim()))
+                query += "{\"op\": \"add\",\"path\": \"/fields/System.Title\",\"value\": \"" + newTitle + "\"},";
+            if (!assignedTo.equals(newAssignedTo))
+                query += "{\"op\": \"add\",\"path\": \"/fields/System.AssignedTo\",\"value\": \"" + newAssignedTo + "\"},";
+            if (!reason.equals(newReason.trim()))
+                query += "{\"op\": \"add\",\"path\": \"/fields/System.Reason\",\"value\": \"" + newReason + "\"},";
             // add state too and get column from mappings then patch
-            if(query.endsWith(","))
-                query= query.substring(0,query.length()-1);
-            query +="]";
+            if (query.endsWith(","))
+                query = query.substring(0, query.length() - 1);
+            query += "]";
 
-            String patchUrl = Constants.ACCOUNT_URL+"/DefaultCollection/_apis/wit/workitems/"+workItemId+"?api-version=1.0";
+            String patchUrl = Constants.ACCOUNT_URL + "/DefaultCollection/_apis/wit/workitems/" + workItemId + "?api-version=1.0";
             SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Constants.CONTEXT);
             OAuth2Helper oAuth2Helper = new OAuth2Helper(prefs);
             try {
-                oAuth2Helper.executeApiPatchCall(patchUrl, query);
+
+                updatedWorkItemDetails = oAuth2Helper.executeApiPatchCall(patchUrl, query);
 
             } catch (IOException e) {
                 e.printStackTrace();

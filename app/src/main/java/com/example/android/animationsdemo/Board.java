@@ -59,13 +59,13 @@ public class Board extends MainActivity {
         this.colName[i] = colName;
     }
 
-    public void startCreateColumnsThread(OAuth2Helper oAuth2Helper) {
-        t = new CreateColumnsThread(oAuth2Helper);
+    public void startLoadingBoardPreRequisites(OAuth2Helper oAuth2Helper) {
+        t = new LoadBoardPreRequisites(oAuth2Helper);
         t.start();
 
     }
 
-    public void stopCreateColumnsThread() {
+    public void doneLoadingBoardPreRequisites() {
         try {
             Log.i("Thread joined", "Thread t has been joined");
             t.join();
@@ -75,33 +75,38 @@ public class Board extends MainActivity {
     }
 
 
-    public class CreateColumnsThread extends Thread {
+    public class LoadBoardPreRequisites extends Thread {
         private String columnsJSON = null;
         private String membersArrayJSON;
         private String getColFieldNameJSON;
-        private String columnsJSONQuery = Constants.ACCOUNT_URL + "/DefaultCollection/" + Constants.PROJECT + "/" + Constants.TEAM + "/_apis/work/boards/" + Constants.BOARD_NAME + "/columns?api-version=2.0-preview";
-        private String getColFieldNameQuery = Constants.ACCOUNT_URL + "/DefaultCollection/_apis/wit/workitems/1?api-version=1.0";
+        private String colFieldNameUrlProviderJSON;
+        private String columnsJSON_URL = Constants.ACCOUNT_URL + "/DefaultCollection/" + Constants.PROJECT + "/" + Constants.TEAM + "/_apis/work/boards/" + Constants.BOARD_NAME + "/columns?api-version=2.0-preview";
+        private String getColFieldNameIdProviderQuery = "{'query': 'Select [System.id] From WorkItems Where [System.TeamProject]=\""+Constants.PROJECT+"\"'}";
+        private String postUrlForIdProvider = Constants.ACCOUNT_URL+"/DefaultCollection/_apis/wit/wiql?api-version=1.0";
+        private String getColFieldNameURL;
         private String getMemberNamesQuery = Constants.ACCOUNT_URL + "/DefaultCollection/_apis/projects/" + Constants.PROJECT + "/teams/" + Constants.TEAM + "/members/?api-version=1.0";
         OAuth2Helper oAuth2Helper;
 
-        //TODO : Make setters and getters like get board get team to form columnsJSONQuery
-        public CreateColumnsThread(OAuth2Helper oAuth2Helper) {
+        //TODO : Make setters and getters like get board get team to form columnsJSON_URL
+        public LoadBoardPreRequisites(OAuth2Helper oAuth2Helper) {
             this.oAuth2Helper = oAuth2Helper;
         }
 
-        public CreateColumnsThread() {
+        public LoadBoardPreRequisites() {
         }
 
         @SuppressLint("NewApi")
         @Override
         public void run() {
             try {
-
-                columnsJSON = oAuth2Helper.executeApiGetCall(columnsJSONQuery);
-                getColFieldNameJSON = oAuth2Helper.executeApiGetCall(getColFieldNameQuery);
+                colFieldNameUrlProviderJSON =oAuth2Helper.executeApiPostCall(postUrlForIdProvider, getColFieldNameIdProviderQuery);
+                JSONObject rootObj = new JSONObject(colFieldNameUrlProviderJSON);
+                getColFieldNameURL = rootObj.getJSONArray("workItems").getJSONObject(0).getString("url");
+                columnsJSON = oAuth2Helper.executeApiGetCall(columnsJSON_URL);
+                getColFieldNameJSON = oAuth2Helper.executeApiGetCall(getColFieldNameURL);
                 membersArrayJSON = oAuth2Helper.executeApiGetCall(getMemberNamesQuery);
                 Log.i(Constants.TAG, "Received response from API : " + columnsJSON);
-                JSONObject rootObj = new JSONObject(columnsJSON);
+                rootObj = new JSONObject(columnsJSON);
                 setColNo(rootObj.getInt("count"));
                 Log.i(Constants.TAG, "Col No " + rootObj.getInt("count"));
                 JSONArray columns = rootObj.getJSONArray("value");
@@ -112,8 +117,8 @@ public class Board extends MainActivity {
                     setColName(i, column.getString("name"));
                 }
                 ////to get and store the field name for columns as it varies from account to account
-                JSONObject rootObj1 = new JSONObject(getColFieldNameJSON);
-                JSONObject fields = rootObj1.getJSONObject("fields");
+                rootObj = new JSONObject(getColFieldNameJSON);
+                JSONObject fields = rootObj.getJSONObject("fields");
                 for (int i = 0; i < fields.length(); i++) {
                     String fieldName = fields.names().getString(i);
                     Log.i("value to check", "the substring to check is for i=:" + i + "and \n the string is " + fieldName.substring(Math.max(0, fieldName.length() - "_Kanban.Column".length())));
@@ -125,9 +130,9 @@ public class Board extends MainActivity {
                 }
 
                 ///set members array to be used later in Assigned To
-                JSONObject rootObj3 = new JSONObject(membersArrayJSON);
-                JSONArray nameJSONArray = rootObj3.getJSONArray("value");
-                int count = rootObj3.getInt("count");
+                rootObj = new JSONObject(membersArrayJSON);
+                JSONArray nameJSONArray = rootObj.getJSONArray("value");
+                int count = rootObj.getInt("count");
                 members = new ArrayList<>();
                 members.add("");
                 for (int i = 0; i < count; i++) {
@@ -199,9 +204,9 @@ public class Board extends MainActivity {
             cardBlock.setTag("Draggable");
             txt.setText(title);
             Log.i(Constants.TAG, "Title set for witem : " + id);
-            cardBlock.setOnLongClickListener(new MyClickListener());
+            cardBlock.setOnTouchListener(new MyClickListener());
             cardBlock.setOnDragListener(new MyDragListener(rootViewGroup));
-            cardBlock.setOnClickListener(new OpenCardInEditMode(rootViewGroup, fields));
+            //cardBlock.setOnClickListener(new OpenCardInEditMode(rootViewGroup, fields));
 
             parentColumnView.addView(cardBlock, position);
 

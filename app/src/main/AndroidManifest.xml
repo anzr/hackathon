@@ -1,32 +1,10 @@
-<!--
-  Copyright 2012 The Android Open Source Project
-
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
-
-      http://www.apache.org/licenses/LICENSE-2.0
-
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-  -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.android.animationsdemo"
     android:versionCode="1"
     android:versionName="1.0">
 
-    <!--
-        This example's minimum API level is 14 due to the following recent
-        key platform features:
 
-        API 11: property animations (android.animations package)
-        API 12: ViewPropertyAnimator
-        API 14: View properties (android.util.Property) such as View.X and View.Y.
-    -->
     <uses-sdk android:minSdkVersion="14" android:targetSdkVersion="17" />
 
     <application android:allowBackup="true"
@@ -45,8 +23,11 @@
             android:name=".OAuthAccessTokenActivity"
             android:label="@string/app_name" />
         <activity
+            android:name=".ChooseProject"
+            android:label="Board" />
+        <activity
             android:name=".MainActivity"
-            android:label="FormActivity" />
+            android:label="Board" />
 
 
 

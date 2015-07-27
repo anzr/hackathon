@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerChooseProject"
+        android:gravity="center|center_horizontal"
+        android:spinnerMode="dropdown"
+        android:layout_alignTop="@+id/chooseProjectTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/goButton"
+        android:layout_alignStart="@+id/goButton" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choose Project"
+        android:id="@+id/chooseProjectTextView"
+        android:layout_marginTop="52dp"
+        android:gravity="center_vertical"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Choose Team"
+        android:id="@+id/chooseTeamTextView"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="46dp"
+        android:layout_below="@+id/spinnerChooseProject"
+        android:layout_toLeftOf="@+id/spinnerChooseTeam"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinnerChooseTeam"
+        android:gravity="center_horizontal"
+        android:spinnerMode="dropdown"
+        android:layout_alignTop="@+id/chooseTeamTextView"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignLeft="@+id/goButton"
+        android:layout_alignStart="@+id/goButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Board"
+        android:id="@+id/goButton"
+        android:layout_below="@+id/spinnerChooseTeam"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="46dp" />
+
+</RelativeLayout>

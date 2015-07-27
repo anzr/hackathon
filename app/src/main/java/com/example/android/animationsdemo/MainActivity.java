@@ -58,8 +58,8 @@ public class MainActivity extends FragmentActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         OAuth2Helper oAuth2Helper = new OAuth2Helper(prefs);
         board = new Board();
-        board.startCreateColumnsThread(oAuth2Helper);
-        board.stopCreateColumnsThread();
+        board.startLoadingBoardPreRequisites(oAuth2Helper);
+        board.doneLoadingBoardPreRequisites();
         //check for extra columns
         numPages = board.getColNo()%MAX_COL_DISPLAYED==0 ? board.getColNo()/MAX_COL_DISPLAYED : board.getColNo()/ MAX_COL_DISPLAYED + 1;
         // Instantiate a ViewPager and a PagerAdapter.
@@ -87,10 +87,6 @@ public class MainActivity extends FragmentActivity {
                 invalidateOptionsMenu();
             }
         });
-    }
-
-    public Board getBoardObj(){
-     return board;
     }
 
     @Override
